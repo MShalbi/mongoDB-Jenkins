@@ -10,6 +10,16 @@ else
     # Add actions to be performed if the container is not running
 fi
 
+if  docker ps --filter "name=mongo-db" | grep -q "mongo-db" && docker ps --filter "name=mongo-express" | grep -q "mongo-express" ; 
+then
+    echo "Containers are exisiting and running."
+    # Add actions to be performed if the container is running
+else
+    echo "Containes are not running."
+    # Add actions to be performed if the container is not running
+    docker compose up 
+fi
+
 
 container_name="my_container"
 
