@@ -1,0 +1,42 @@
+version: '2.8'
+services:
+
+#name: projectName                     #As option
+
+#mongo db container
+  mongo:
+    container_name: mongo-db
+    image: mongo:5.0.27
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    networks:
+      - mongo-network
+    volumes:
+      - mongo-volume:/data/db
+      - mongo-volume:/usr/bbin
+
+#mongo exxpress container
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express:1.0.2-18-alpine3.19
+    ports:
+      - 8085:8081
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo-db
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
+    depends_on:
+      - mongo
+    networks:
+      - mongo-network
+
+#mongo network
+networks:
+  mongo-network:
+    name: mongo-nw
+    driver: bridge
+
+volumes:
+  mongo-volume:
+    name: mongo-vol
